@@ -1,0 +1,18 @@
+{
+  "request": {
+    "expression": "(A | B",
+    "trace": true
+  },
+  "response": {
+    "status": "ERROR",
+    "assignment": null,
+    "cnf": null,
+    "clauses": [],
+    "events": [],
+    "error": {
+      "code": "SYNTAX_ERROR",
+      "message": "Missing ')' for the '(' at position 0.",
+      "position": 6
+    }
+  }
+}

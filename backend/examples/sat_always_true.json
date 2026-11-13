@@ -1,0 +1,26 @@
+{
+  "request": {
+    "expression": "A | !A",
+    "trace": true
+  },
+  "response": {
+    "status": "SAT",
+    "assignment": {},
+    "cnf": "",
+    "clauses": [],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "solution",
+        "node_id": "n0",
+        "assignment": {}
+      }
+    ]
+  }
+}

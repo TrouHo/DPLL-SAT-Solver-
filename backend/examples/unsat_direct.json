@@ -1,0 +1,61 @@
+{
+  "request": {
+    "expression": "A & !A",
+    "trace": true
+  },
+  "response": {
+    "status": "UNSAT",
+    "assignment": null,
+    "cnf": "A & !A",
+    "clauses": [
+      {
+        "id": "c1",
+        "literals": [
+          "A"
+        ]
+      },
+      {
+        "id": "c2",
+        "literals": [
+          "!A"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "unit_propagation",
+        "node_id": "n0",
+        "variable": "A",
+        "value": true,
+        "reason_clause": "c1",
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 2,
+        "type": "conflict",
+        "node_id": "n0",
+        "reason_clause": "c2",
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 3,
+        "type": "unsat",
+        "node_id": "n0",
+        "assignment": {
+          "A": true
+        }
+      }
+    ]
+  }
+}

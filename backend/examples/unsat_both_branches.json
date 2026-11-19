@@ -1,0 +1,135 @@
+{
+  "request": {
+    "expression": "(A | B) & (A | !B) & (!A | B) & (!A | !B)",
+    "trace": true
+  },
+  "response": {
+    "status": "UNSAT",
+    "assignment": null,
+    "cnf": "(A | B) & (A | !B) & (!A | B) & (!A | !B)",
+    "clauses": [
+      {
+        "id": "c1",
+        "literals": [
+          "A",
+          "B"
+        ]
+      },
+      {
+        "id": "c2",
+        "literals": [
+          "A",
+          "!B"
+        ]
+      },
+      {
+        "id": "c3",
+        "literals": [
+          "!A",
+          "B"
+        ]
+      },
+      {
+        "id": "c4",
+        "literals": [
+          "!A",
+          "!B"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "decision",
+        "node_id": "n1",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": true,
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 2,
+        "type": "unit_propagation",
+        "node_id": "n1",
+        "variable": "B",
+        "value": true,
+        "reason_clause": "c3",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 3,
+        "type": "conflict",
+        "node_id": "n1",
+        "reason_clause": "c4",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 4,
+        "type": "backtrack",
+        "node_id": "n0",
+        "from_node": "n1",
+        "assignment": {}
+      },
+      {
+        "seq": 5,
+        "type": "decision",
+        "node_id": "n2",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": false,
+        "assignment": {
+          "A": false
+        }
+      },
+      {
+        "seq": 6,
+        "type": "unit_propagation",
+        "node_id": "n2",
+        "variable": "B",
+        "value": true,
+        "reason_clause": "c1",
+        "assignment": {
+          "A": false,
+          "B": true
+        }
+      },
+      {
+        "seq": 7,
+        "type": "conflict",
+        "node_id": "n2",
+        "reason_clause": "c2",
+        "assignment": {
+          "A": false,
+          "B": true
+        }
+      },
+      {
+        "seq": 8,
+        "type": "backtrack",
+        "node_id": "n0",
+        "from_node": "n2",
+        "assignment": {}
+      },
+      {
+        "seq": 9,
+        "type": "unsat",
+        "node_id": "n0",
+        "assignment": {}
+      }
+    ]
+  }
+}

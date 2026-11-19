@@ -1,0 +1,138 @@
+{
+  "request": {
+    "expression": "(A -> B) & (B -> C) & !(A <-> C)",
+    "trace": true
+  },
+  "response": {
+    "status": "SAT",
+    "assignment": {
+      "A": false,
+      "C": true
+    },
+    "cnf": "(!A | B) & (!B | C) & (A | C) & (!A | !C)",
+    "clauses": [
+      {
+        "id": "c1",
+        "literals": [
+          "!A",
+          "B"
+        ]
+      },
+      {
+        "id": "c2",
+        "literals": [
+          "!B",
+          "C"
+        ]
+      },
+      {
+        "id": "c3",
+        "literals": [
+          "A",
+          "C"
+        ]
+      },
+      {
+        "id": "c4",
+        "literals": [
+          "!A",
+          "!C"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "decision",
+        "node_id": "n1",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": true,
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 2,
+        "type": "unit_propagation",
+        "node_id": "n1",
+        "variable": "B",
+        "value": true,
+        "reason_clause": "c1",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 3,
+        "type": "unit_propagation",
+        "node_id": "n1",
+        "variable": "C",
+        "value": true,
+        "reason_clause": "c2",
+        "assignment": {
+          "A": true,
+          "B": true,
+          "C": true
+        }
+      },
+      {
+        "seq": 4,
+        "type": "conflict",
+        "node_id": "n1",
+        "reason_clause": "c4",
+        "assignment": {
+          "A": true,
+          "B": true,
+          "C": true
+        }
+      },
+      {
+        "seq": 5,
+        "type": "backtrack",
+        "node_id": "n0",
+        "from_node": "n1",
+        "assignment": {}
+      },
+      {
+        "seq": 6,
+        "type": "decision",
+        "node_id": "n2",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": false,
+        "assignment": {
+          "A": false
+        }
+      },
+      {
+        "seq": 7,
+        "type": "unit_propagation",
+        "node_id": "n2",
+        "variable": "C",
+        "value": true,
+        "reason_clause": "c3",
+        "assignment": {
+          "A": false,
+          "C": true
+        }
+      },
+      {
+        "seq": 8,
+        "type": "solution",
+        "node_id": "n2",
+        "assignment": {
+          "A": false,
+          "C": true
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "request": {
+    "expression": "(!A | B) & (!A | !B) & (A | C)",
+    "trace": true
+  },
+  "response": {
+    "status": "SAT",
+    "assignment": {
+      "A": false,
+      "C": true
+    },
+    "cnf": "(!A | B) & (!A | !B) & (A | C)",
+    "clauses": [
+      {
+        "id": "c1",
+        "literals": [
+          "!A",
+          "B"
+        ]
+      },
+      {
+        "id": "c2",
+        "literals": [
+          "!A",
+          "!B"
+        ]
+      },
+      {
+        "id": "c3",
+        "literals": [
+          "A",
+          "C"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "decision",
+        "node_id": "n1",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": true,
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 2,
+        "type": "unit_propagation",
+        "node_id": "n1",
+        "variable": "B",
+        "value": true,
+        "reason_clause": "c1",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 3,
+        "type": "conflict",
+        "node_id": "n1",
+        "reason_clause": "c2",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 4,
+        "type": "backtrack",
+        "node_id": "n0",
+        "from_node": "n1",
+        "assignment": {}
+      },
+      {
+        "seq": 5,
+        "type": "decision",
+        "node_id": "n2",
+        "parent_id": "n0",
+        "variable": "A",
+        "value": false,
+        "assignment": {
+          "A": false
+        }
+      },
+      {
+        "seq": 6,
+        "type": "unit_propagation",
+        "node_id": "n2",
+        "variable": "C",
+        "value": true,
+        "reason_clause": "c3",
+        "assignment": {
+          "A": false,
+          "C": true
+        }
+      },
+      {
+        "seq": 7,
+        "type": "solution",
+        "node_id": "n2",
+        "assignment": {
+          "A": false,
+          "C": true
+        }
+      }
+    ]
+  }
+}

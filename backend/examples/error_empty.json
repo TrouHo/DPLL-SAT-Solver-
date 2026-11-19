@@ -1,0 +1,17 @@
+{
+  "request": {
+    "expression": "",
+    "trace": true
+  },
+  "response": {
+    "status": "ERROR",
+    "assignment": null,
+    "cnf": null,
+    "clauses": [],
+    "events": [],
+    "error": {
+      "code": "EMPTY_INPUT",
+      "message": "The expression is empty."
+    }
+  }
+}

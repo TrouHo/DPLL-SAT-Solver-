@@ -1,0 +1,69 @@
+{
+  "request": {
+    "expression": "A & (!A | B)",
+    "trace": true
+  },
+  "response": {
+    "status": "SAT",
+    "assignment": {
+      "A": true,
+      "B": true
+    },
+    "cnf": "A & (!A | B)",
+    "clauses": [
+      {
+        "id": "c1",
+        "literals": [
+          "A"
+        ]
+      },
+      {
+        "id": "c2",
+        "literals": [
+          "!A",
+          "B"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "type": "root",
+        "node_id": "n0",
+        "assignment": {}
+      },
+      {
+        "seq": 1,
+        "type": "unit_propagation",
+        "node_id": "n0",
+        "variable": "A",
+        "value": true,
+        "reason_clause": "c1",
+        "assignment": {
+          "A": true
+        }
+      },
+      {
+        "seq": 2,
+        "type": "unit_propagation",
+        "node_id": "n0",
+        "variable": "B",
+        "value": true,
+        "reason_clause": "c2",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      },
+      {
+        "seq": 3,
+        "type": "solution",
+        "node_id": "n0",
+        "assignment": {
+          "A": true,
+          "B": true
+        }
+      }
+    ]
+  }
+}

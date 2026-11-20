@@ -1,14 +1,21 @@
-"""The DPLL algorithm: depth-first search with backtracking + unit propagation.
+"""DPLL SAT solver with two independent inference modes.
 
-Input: a CNF formula as a list of clauses, each clause a list of integers
-(3 means variable 3, -3 means NOT variable 3).
+Input:
+    A CNF formula represented as lists of signed integer literals.
 
-Fixed rules, so that the same input always gives the same search tree:
-    - unit propagation always runs before a decision;
-    - when several clauses are unit, the first one in clause order is used;
-    - the decision variable is the smallest-numbered variable still needed;
-    - True is tried before False;
-    - pure literal elimination is off.
+Rule modes:
+    - up_only: Repeatedly apply Unit Propagation (UP).
+    - pl_only: Repeatedly apply Pure Literal Elimination (PL).
+
+The two inference rules are mutually exclusive in each run.
+
+Both modes use the same depth-first search and backtracking:
+    - Detect conflicts from unsatisfied clauses.
+    - Choose the smallest unassigned variable still needed.
+    - Try True before False.
+    - Backtrack when a branch cannot satisfy the formula.
+
+The default mode is up_only for backward compatibility.
 """
 
 

@@ -180,7 +180,7 @@ def solve_expression(
     rule_mode: str = "up_only",
 ) -> dict:
     """Solve through the selected source without ever falling back silently."""
-    selected_source = source or mode or "mock"
+    selected_source = source or mode or "backend"
     if selected_source == "real":
         selected_source = "backend"
     if selected_source not in {"mock", "backend"}:

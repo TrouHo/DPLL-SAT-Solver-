@@ -144,7 +144,7 @@ def get_backtrack_annotation(result: dict[str, Any], visible_seq: int) -> dict[s
     target = current["node_id"]
     return {
         "source_id": frontier[failed],
-        "target_id": fork_point[target],
+        "target_id": frontier[target],
         "side": branch_side.get(failed, "left"),
         "label": "Backtrack",
     }
@@ -205,7 +205,7 @@ def build_tree(result: dict[str, Any], visible_seq: int) -> Digraph:
             visual_nodes.append((visual_id, event))
             normal_edges.append(
                 (
-                    fork_point.get(parent, frontier[parent]),
+                    frontier[parent],
                     visual_id,
                     {
                         "label": f"{event['variable']} = {'True' if event['value'] else 'False'}",

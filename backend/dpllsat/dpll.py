@@ -1,14 +1,21 @@
-"""The DPLL algorithm: depth-first search with backtracking + unit propagation.
+"""DPLL SAT solver with two independent inference modes.
 
-Input: a CNF formula as a list of clauses, each clause a list of integers
-(3 means variable 3, -3 means NOT variable 3).
+Input:
+    A CNF formula represented as lists of signed integer literals.
 
-Fixed rules, so that the same input always gives the same search tree:
-    - unit propagation always runs before a decision;
-    - when several clauses are unit, the first one in clause order is used;
-    - the decision variable is the smallest-numbered variable still needed;
-    - True is tried before False;
-    - pure literal elimination is off.
+Rule modes:
+    - up_only: Repeatedly apply Unit Propagation (UP).
+    - pl_only: Repeatedly apply Pure Literal Elimination (PL).
+
+The two inference rules are mutually exclusive in each run.
+
+Both modes use the same depth-first search and backtracking:
+    - Detect conflicts from unsatisfied clauses.
+    - Choose the smallest unassigned variable still needed.
+    - Try True before False.
+    - Backtrack when a branch cannot satisfy the formula.
+
+The default mode is up_only for backward compatibility.
 """
 
 
@@ -52,6 +59,44 @@ def _propagate(clauses, assignment, node_id, tracer):
         tracer.unit_propagation(node_id, abs(literal), literal > 0, index, assignment)
 
 
+def _check_conflict(clauses, assignment, node_id, tracer):
+    """Report the first unsatisfied clause, independently of inference rules."""
+    for index, clause in enumerate(clauses):
+        if _free_literals(clause, assignment) == []:
+            tracer.conflict(node_id, index, assignment)
+            return True
+    return False
+
+
+def _pick_pure_literal(clauses, assignment):
+    """Return the smallest pure variable and its satisfying value, if any."""
+    polarities = {}
+    for clause in clauses:
+        free = _free_literals(clause, assignment)
+        if free is None:
+            continue
+        for literal in free:
+            polarities.setdefault(abs(literal), set()).add(literal > 0)
+    for variable in sorted(polarities):
+        signs = polarities[variable]
+        if len(signs) == 1:
+            return variable, next(iter(signs))
+    return None
+
+
+def _eliminate_pure_literals(clauses, assignment, node_id, tracer):
+    """Apply pure-literal elimination to a fixed point, without running UP."""
+    while True:
+        if _check_conflict(clauses, assignment, node_id, tracer):
+            return False
+        pure = _pick_pure_literal(clauses, assignment)
+        if pure is None:
+            return True
+        variable, value = pure
+        assignment[variable] = value
+        tracer.pure_literal(node_id, variable, value, assignment)
+
+
 def _pick_variable(clauses, assignment):
     """Smallest unassigned variable of the unsatisfied clauses, or None.
 
@@ -67,15 +112,22 @@ def _pick_variable(clauses, assignment):
     return best
 
 
-def solve(clauses, tracer):
+def solve(clauses, tracer, rule_mode="up_only"):
     """Run DPLL. Returns a satisfying assignment {variable: bool}, or None.
 
     The assignment may be partial: variables that are not needed to
     satisfy the formula are left out.
     """
 
+    if rule_mode not in ("up_only", "pl_only"):
+        raise ValueError("Unsupported rule_mode")
+
     def search(node_id, assignment):
-        if not _propagate(clauses, assignment, node_id, tracer):
+        if rule_mode == "up_only":
+            reduced = _propagate(clauses, assignment, node_id, tracer)
+        else:
+            reduced = _eliminate_pure_literals(clauses, assignment, node_id, tracer)
+        if not reduced:
             return None                                   # conflict: this branch fails
         variable = _pick_variable(clauses, assignment)
         if variable is None:

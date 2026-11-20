@@ -26,6 +26,19 @@ python make_examples.py
 
 `examples/` holds sample request/response pairs for the frontend to use as mock data.
 
+## Inference modes
+
+The solver supports two independent inference modes:
+
+- `up_only` (default): applies Unit Propagation repeatedly.
+  Pure Literal Elimination is disabled.
+- `pl_only`: applies Pure Literal Elimination repeatedly.
+  Unit Propagation is disabled.
+
+Both modes use the same DPLL branching and backtracking
+mechanism. They return SAT or UNSAT and can produce
+different search traces.
+
 ## Input syntax
 
 Case-insensitive, spaces ignored. Any propositional formula is accepted and

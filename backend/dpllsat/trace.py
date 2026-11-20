@@ -6,6 +6,7 @@ variables assigned at that moment). Some types carry extra fields:
     root              -
     decision          parent_id, variable, value     (creates a new node)
     unit_propagation  variable, value, reason_clause (stays in the node)
+    pure_literal      variable, value                (stays in the node)
     conflict          reason_clause                  (stays in the node)
     backtrack         from_node                      (node_id = node we return to)
     solution / unsat  -
@@ -65,6 +66,10 @@ class Tracer:
         self._emit("unit_propagation", node_id, assignment,
                    variable=self.names[variable], value=value,
                    reason_clause=self._clause_id(clause_index))
+
+    def pure_literal(self, node_id, variable, value, assignment):
+        self._emit("pure_literal", node_id, assignment,
+                   variable=self.names[variable], value=value)
 
     def conflict(self, node_id, clause_index, assignment):
         self._emit("conflict", node_id, assignment,

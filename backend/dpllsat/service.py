@@ -34,6 +34,12 @@ def _solve(payload):
     with_trace = payload.get("trace", True)
     if not isinstance(with_trace, bool):
         raise SolverError(INVALID_REQUEST, "The field 'trace' must be true or false.")
+    rule_mode = payload.get("rule_mode", "up_only")
+    if rule_mode not in ("up_only", "pl_only"):
+        raise SolverError(
+            INVALID_REQUEST,
+            "rule_mode must be 'up_only' or 'pl_only'.",
+        )
 
     tree = parser.parse(expression)
     if len(parser.variables(tree)) > MAX_VARIABLES:
@@ -45,7 +51,7 @@ def _solve(payload):
 
     encoded, names = cnf.encode(clauses)
     tracer = Tracer(names, enabled=with_trace)
-    result = dpll.solve(encoded, tracer)
+    result = dpll.solve(encoded, tracer, rule_mode=rule_mode)
 
     return {
         "status": "SAT" if result is not None else "UNSAT",
